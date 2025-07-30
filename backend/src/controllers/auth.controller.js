@@ -1,5 +1,6 @@
+import { generateTokenAndSetCookies } from "../../utils/generateTokenAndSetCookies.js";
 import { generateVerificationToken } from "../../utils/generateVerificationCode.js";
-import { User } from "../models/User.model";
+import { User } from "../models/User.model.js";
 import bcryptjs from "bcryptjs";
 
 export async function signup(req , res){
@@ -29,8 +30,14 @@ export async function signup(req , res){
         generateTokenAndSetCookies(res, user._id);
 
         return res.status(201).json({
-            message : "user created ",
-            user
+            success : true,
+            message : "User created successfully",
+            user : {
+                ...user._doc,
+                password: undefined, // Exclude password from response
+              
+            }
+        
         })
 
     }
@@ -40,7 +47,7 @@ export async function signup(req , res){
     }
 };
 export function login(req, res){
-   res.send("login endpoint hit successfully");
+    
 };
 export function logout(){
     res.send("logout endpoint hit successfully");
